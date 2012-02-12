@@ -1,5 +1,4 @@
 package de.apaku.merss.client;
-
 /**
  * Copyright (c) 2012, Andreas Pakulat <apaku@gmx.de>
  * All rights reserved.
@@ -28,20 +27,36 @@ package de.apaku.merss.client;
  * @author Andreas Pakulat <apaku@gmx.de>
  */
 
-import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.user.client.Window;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.RootLayoutPanel;
-import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.StackLayoutPanel;
+import com.google.gwt.user.client.ui.Widget;
 
-public class MeRss implements EntryPoint {
+public class MeRssUi extends Composite {
 
-	@Override
-	public void onModuleLoad() {
-		Window.enableScrolling(false);
-		Window.setMargin("0px");
-		MeRssUi ui = new MeRssUi();
-		RootLayoutPanel.get().add(ui);
+	private static MeRssUiUiBinder uiBinder = GWT.create(MeRssUiUiBinder.class);
+	@UiField StackLayoutPanel itemList;
+	@UiField Button markAllReadBtn;
+	@UiField Button reloadBtn;
+	@UiField Button subscribeBtn;
+	@UiField Button unreadBtn;
+	@UiField Button allBtn;
+	@UiField Label unreadLbl;
+
+	interface MeRssUiUiBinder extends UiBinder<Widget, MeRssUi> {
 	}
 
+	public MeRssUi() {
+		initWidget(uiBinder.createAndBindUi(this));
+	}
+
+	@UiHandler("subscribeBtn")
+	void handleClick(ClickEvent e) {
+	}
 }
