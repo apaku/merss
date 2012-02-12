@@ -1,0 +1,24 @@
+- Sidebar on the Left
+	* Subscribe-Button for adding new feeds.
+	* Button for showing only unread items
+	* Button for showing all items
+	* 1 Button for each feed to show only items from that feed
+- Main Area on the right
+	* "Toolbar" like button list on top
+		- Reload Button
+		- Label showing number of unread items
+		- Button to mark all as read
+		- Sort-Order (newest oldest)
+		- (optional) Next/Previous buttons to move through list
+	* Expandable-List on the bottom
+		- One Line per entry
+		- show title, a bit of text, (date or time) and the feed
+		- allow to open in new tab of the browser
+		- one entry can be "opened" showing inline the content of the entry
+		
+- Keyboard navigation (mostly taken from Google Reader):
+	- Next/Previous entry in the list: n+p
+	- open/close entry: o/Enter
+	- open in external tab: v
+	- Marking as read/unread: m
+	- Mark all as read: shift+a
