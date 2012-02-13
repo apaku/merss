@@ -1,0 +1,33 @@
+/merss_feeds/
+    - Database for all feeds
+    - Each feed is a document with a generated doc-id
+    - fields of the feed are:
+        * url
+        * (maybe) icon from url
+        * title
+        * (maybe) date
+        * username+password for login
+        * entries and Array of objects:
+            * id
+            * url
+            * title
+            * date
+            * author
+            * content
+/merss_users/
+    - Database for all users
+    - username is doc-id, requires unique usernames
+    - each document describes a user, his subscribed feeds and the read status on the articles
+    - document structure:
+        * username
+        * password (sha1-encoded)
+        * ui-settings an object:
+            * sort-field
+            * selectedFeed
+        * subscribedfeeds an array of objects:
+            * feed-doc-id
+            * (optional, if different from stored feed-title) title
+            * entrystatus an array of objects:
+                * entry-id
+                * read
+                * starred
