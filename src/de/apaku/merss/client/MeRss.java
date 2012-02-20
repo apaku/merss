@@ -3,7 +3,7 @@ package de.apaku.merss.client;
 /**
  * Copyright (c) 2012, Andreas Pakulat <apaku@gmx.de>
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *     * Redistributions of source code must retain the above copyright
@@ -14,7 +14,7 @@ package de.apaku.merss.client;
  *     * Neither the name of the <organization> nor the
  *       names of its contributors may be used to endorse or promote products
  *       derived from this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -42,6 +42,12 @@ import com.google.gwt.user.client.ui.RootLayoutPanel;
 
 public class MeRss implements EntryPoint {
 
+	private static final String CONFIG_URL = GWT.getHostPageBaseURL() + "configuration.json";
+
+	private final native Configuration asConfiguration( String json ) /*-{
+		return eval(json);
+	}-*/;
+
 	@Override
 	public void onModuleLoad() {
 		Window.enableScrolling(false);
@@ -50,6 +56,41 @@ public class MeRss implements EntryPoint {
 		RootLayoutPanel.get().add(login);
 		login.loginButton.setEnabled(false);
 		login.signupButton.setEnabled(false);
+
+		String baseUrl = CONFIG_URL;
+		if( !GWT.isProdMode() ) {
+			// In development mode we need to add the query from the Window.location
+			baseUrl += Window.Location.getQueryString();
+		}
+		final String url = URL.encode(baseUrl);
+		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
+		try{
+			builder.sendRequest("", new RequestCallback() {
+
+				@Override
+				public void onResponseReceived(Request request, Response response) {
+					if( 200 == response.getStatusCode() ) {
+						try{
+							Configuration c = JsonUtils.safeEval(response.getText());
+							login.setDataBaseUrl(c.getDataBaseUrl());
+							login.loginButton.setEnabled(true);
+							login.signupButton.setEnabled(true);
+						}catch(Exception e ){
+							System.err.println(e);
+						}
+					} else {
+						Window.alert("Error retrieving configuration ("+url+": " + response.getStatusCode() + "/" + response.getStatusText() );
+					}
+				}
+
+				@Override
+				public void onError(Request request, Throwable exception) {
+					Window.alert("Error retrieving configuration ("+url+": "+ exception );
+				}
+			});
+		} catch( RequestException e ) {
+			Window.alert("Couldn't retrieve configuration");
+		}
 	}
 
 }
